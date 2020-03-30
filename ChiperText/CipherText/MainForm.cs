@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ChiperText;
@@ -50,7 +51,22 @@ namespace CipherText
             }
 
             string plainText = File.ReadAllText(plainTextPath);
+
+            if (!plainText.All(c => Char.IsLetterOrDigit(c) || c == ' '))
+            {
+                MessageBox.Show("The text must contains only alphanumeric characters in order to be encrypted!",
+                    "Invalid input!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             string vigenereKey = vigenereKeyTextBox.Text;
+
+            if (!vigenereKey.All(c => Char.IsLetterOrDigit(c) || c == ' '))
+            {
+                MessageBox.Show("The key must contains only alphanumeric characters in order to be encrypted!",
+                    "Invalid key!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var vigenereEncryptionText = VigenereCipher.Encipher(plainText, vigenereKey);
 
@@ -75,6 +91,20 @@ namespace CipherText
 
             string cipherText = File.ReadAllText(cipherTextPath);
             string vigenereKey = vigenereKeyTextBox.Text;
+
+            if (!cipherText.All(c => Char.IsLetterOrDigit(c) || c == ' '))
+            {
+                MessageBox.Show("The text must contains only alphanumeric characters in order to be encrypted!",
+                    "Invalid input!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!vigenereKey.All(c => Char.IsLetterOrDigit(c) || c == ' '))
+            {
+                MessageBox.Show("The key must contains only alphanumeric characters in order to be encrypted!",
+                    "Invalid key!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var vigenereDecryptionText = VigenereCipher.Decipher(cipherText, vigenereKey);
 
